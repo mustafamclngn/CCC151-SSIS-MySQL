@@ -57,12 +57,27 @@ class Ui_addProgramDialog(object):
         font.setPointSize(12)
         self.prcollegecodeBox.setFont(font)
         self.prcollegecodeBox.setObjectName("prcollegecodeBox")
+        button_style = """
+QPushButton {
+    background-color: rgb(114, 137, 218);
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+QPushButton:hover {
+    background-color: rgb(103, 126, 207);
+}
+QPushButton:pressed {
+    background-color: rgb(92, 115, 196);
+}
+"""
         self.addProgramButton = QtWidgets.QPushButton(addProgramDialog)
         self.addProgramButton.setGeometry(QtCore.QRect(160, 310, 141, 41))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.addProgramButton.setFont(font)
         self.addProgramButton.setObjectName("addProgramButton")
+        self.addProgramButton.setStyleSheet(button_style)
 
         self.retranslateUi(addProgramDialog)
         QtCore.QMetaObject.connectSlotsByName(addProgramDialog)

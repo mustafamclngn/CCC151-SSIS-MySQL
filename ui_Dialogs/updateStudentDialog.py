@@ -93,12 +93,27 @@ class Ui_updateStudentDialog(object):
         font.setPointSize(24)
         self.updatestudentLabel.setFont(font)
         self.updatestudentLabel.setObjectName("updatestudentLabel")
+        button_style = """
+QPushButton {
+    background-color: rgb(114, 137, 218);
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+QPushButton:hover {
+    background-color: rgb(103, 126, 207);
+}
+QPushButton:pressed {
+    background-color: rgb(92, 115, 196);
+}
+"""
         self.updateStudentButton = QtWidgets.QPushButton(updateStudentDialog)
         self.updateStudentButton.setGeometry(QtCore.QRect(160, 520, 141, 41))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.updateStudentButton.setFont(font)
         self.updateStudentButton.setObjectName("updateStudentButton")
+        self.updateStudentButton.setStyleSheet(button_style)
 
         self.retranslateUi(updateStudentDialog)
         QtCore.QMetaObject.connectSlotsByName(updateStudentDialog)

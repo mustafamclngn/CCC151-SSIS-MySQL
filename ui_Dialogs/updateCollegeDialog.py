@@ -28,12 +28,27 @@ class Ui_updateCollegeDialog(object):
         font.setPointSize(12)
         self.updcollegeNameLine.setFont(font)
         self.updcollegeNameLine.setObjectName("updcollegeNameLine")
+        button_style = """
+QPushButton {
+    background-color: rgb(114, 137, 218);
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+QPushButton:hover {
+    background-color: rgb(103, 126, 207);
+}
+QPushButton:pressed {
+    background-color: rgb(92, 115, 196);
+}
+"""
         self.updateCollegeButton = QtWidgets.QPushButton(updateCollegeDialog)
         self.updateCollegeButton.setGeometry(QtCore.QRect(160, 300, 141, 41))
         font = QtGui.QFont()
         font.setPointSize(12)
         self.updateCollegeButton.setFont(font)
         self.updateCollegeButton.setObjectName("updateCollegeButton")
+        self.updateCollegeButton.setStyleSheet(button_style)
         self.collegeCodeLabel_2 = QtWidgets.QLabel(updateCollegeDialog)
         self.collegeCodeLabel_2.setGeometry(QtCore.QRect(100, 30, 271, 71))
         font = QtGui.QFont()

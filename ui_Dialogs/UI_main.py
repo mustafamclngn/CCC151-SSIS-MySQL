@@ -17,6 +17,7 @@ class Ui_mainWindow(object):
         mainWindow.resize(1822, 1022)
         mainWindow.setMaximumSize(1822, 1022)
         mainWindow.setMinimumSize(1822, 1022)
+        mainWindow.setStyleSheet("background-color: rgb(30,33,36); color: rgb(255,255,255);") #changes
         self.centralwidget = QtWidgets.QWidget(mainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.searchLine = QtWidgets.QLineEdit(self.centralwidget)
@@ -102,10 +103,48 @@ class Ui_mainWindow(object):
         self.tableWidget.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
         self.tableWidget.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
         self.tableWidget.setGeometry(QtCore.QRect(30, 110, 1771, 801))
+        self.tableWidget.setStyleSheet("""
+    QTableWidget {
+        background-color: rgb(40, 43, 48);
+        color: white;
+        gridline-color: #5a5a5a;
+    }
+
+    QHeaderView::section {
+        background-color: rgb(60, 63, 65);
+        color: white;
+        padding: 4px;
+        border: 1px solid #5a5a5a;
+    }                                 
+    QTableWidget::item:selected {
+        background-color: rgb(85, 170, 255);
+        color: black;
+    }
+""")
+        button_style = """
+QPushButton {
+    background-color: rgb(114, 137, 218);
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+QPushButton:hover {
+    background-color: rgb(103, 126, 207);
+}
+QPushButton:pressed {
+    background-color: rgb(92, 115, 196);
+}
+"""
+        self.searchButton.setStyleSheet(button_style)
+        self.refreshButton.setStyleSheet(button_style)
+        self.deleteButton.setStyleSheet(button_style)
+        self.updateButton.setStyleSheet(button_style)
+        self.addButton.setStyleSheet(button_style)
         self.tableWidget.setObjectName("tableWidget")
         self.tableWidget.setColumnCount(0)
         self.tableWidget.setRowCount(0)
         self.tableWidget.verticalHeader().setVisible(False)
+        self.tableWidget.horizontalHeader().setStyleSheet("background-color: rgb(40, 43, 48);") #changes
         font = QtGui.QFont()
         font.setPointSize(12)
         self.tableWidget.setFont(font)

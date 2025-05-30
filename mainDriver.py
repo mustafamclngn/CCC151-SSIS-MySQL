@@ -203,8 +203,20 @@ class MainClass(QMainWindow, Ui_mainWindow):
                            (oldprogramCode,))
             self.programCount = cursor.fetchone()[0]
 
-            cursor.execute("UPDATE STUDENTS SET firstname = %s, lastname = %s, yearlevel = %s, gender = %s, programcode = %s WHERE idnumber = %s",
-                           (newfirstName, newlastName, newyearLevel, newgender, newprogramCode, oldstudentID))
+            # check if id already exists
+            if newstudentID != oldstudentID:
+                cursor.execute("SELECT COUNT(*) FROM STUDENTS WHERE idnumber = %s", (newstudentID,))
+                if cursor.fetchone()[0] > 0:
+                    QMessageBox.warning(self, "Update Error", "Student ID already exists. Please use a different ID.")
+                    cursor.close()
+                    connection.close()
+                    return
+
+            # update
+            cursor.execute("""UPDATE STUDENTS SET idnumber = %s, firstname = %s, lastname = %s,
+                            yearlevel = %s, gender = %s, programcode = %s WHERE idnumber = %s""",
+                        (newstudentID, newfirstName, newlastName, newyearLevel, newgender, newprogramCode, oldstudentID))
+
             connection.commit()
             cursor.close()
             connection.close()
@@ -333,7 +345,7 @@ class MainClass(QMainWindow, Ui_mainWindow):
         QMessageBox.information(self, "Success", "Program deleted successfully! Students under this program now have NULL programs.")
     
     def successdeleteCollege(self):
-        QMessageBox.information(self, "Success", "College deleted successfully! Programs under this college have been deleted.")
+        QMessageBox.information(self, "Success", "College deleted successfully! Programs under this college now have NULL colleges.")
 
     def successUpdateStudent(self):
         QMessageBox.information(self, "Success", "Student updated successfully!")
@@ -424,9 +436,10 @@ class MainClass(QMainWindow, Ui_mainWindow):
 
         collegeCode = self.tableWidget.item(selected_row, 0).text()
 
-        confirmation = QMessageBox.question(self,
+        confirmation = QMessageBox.question(
+            self,
             "Confirm Deletion",
-            f"Are you sure you want to delete the college '{collegeCode}' and all associated programs?",
+            f"Are you sure you want to delete the college '{collegeCode}'? Programs under this college will have their college set to NULL.",
             QMessageBox.Yes | QMessageBox.No,
         )
 
@@ -436,15 +449,18 @@ class MainClass(QMainWindow, Ui_mainWindow):
         connection = self.mysqlConnection()
         cursor = connection.cursor()
 
-        #DELETE PROGRAMS UNDER THIS COLLEGE
-        cursor.execute("DELETE FROM PROGRAMS WHERE collegecode = %s",
-                       (collegeCode,))
+        # set college code to NULL for programs under college
+        cursor.execute("UPDATE PROGRAMS SET collegecode = NULL WHERE collegecode = %s", (collegeCode,))
         connection.commit()
 
-        #DELETE THE COLLEGE
-        cursor.execute("DELETE FROM COLLEGES WHERE collegecode = %s",
-                       (collegeCode,))
+        # delete college
+        cursor.execute("DELETE FROM COLLEGES WHERE collegecode = %s", (collegeCode,))
         connection.commit()
+
+        cursor.close()
+        connection.close()
+
+        self.loadDatabase()
 
         cursor.close()
         connection.close()
